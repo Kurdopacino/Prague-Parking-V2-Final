@@ -1,10 +1,18 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 
 namespace ParkingSystem.Classes_Folder
 {
+    public abstract class Vehicle
+    {
+        public string LicensePlate { get; set; }
+        public abstract double Size { get; }
+        public string Type { get; set; }
+    }
     public class ParkingLot
     {
+
         private List<ParkingSpot> parkingSpots;
         private Dictionary<string, (int spot, DateTime startTime, VehicleType type)> parkedVehicles;
 
@@ -21,14 +29,31 @@ namespace ParkingSystem.Classes_Folder
 
         public bool ParkVehicle(Vehicle vehicle)
         {
-            int availableSpot = FindAvailableSpot(vehicle.Type);
+            if (!Enum.TryParse(vehicle.Type, out ParkingSpot.VehicleType vehicleType))
+            {
+                return false;
+            }
+
+            int availableSpot = FindAvailableSpot(vehicleType);
             if (availableSpot == -1) return false;
 
-            var parkingSpotVehicle = new ParkingSpot.Vehicle(vehicle.LicensePlate, (ParkingSpot.VehicleType)vehicle.Type);
+            var parkingSpotVehicle = new ParkingSpot.Vehicle(vehicle.LicensePlate, vehicleType);
 
             parkingSpots[availableSpot].ParkVehicle(parkingSpotVehicle);
-            parkedVehicles[vehicle.LicensePlate] = (availableSpot, DateTime.Now, vehicle.Type);
+            parkedVehicles[vehicle.LicensePlate] = (availableSpot, DateTime.Now, (VehicleType)vehicleType);
             return true;
+        }
+
+        private int FindAvailableSpot(ParkingSpot.VehicleType type)
+        {
+            for (int i = 0; i < parkingSpots.Count; i++)
+            {
+                if (!parkingSpots[i].IsOccupied)
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
 
         public bool RetrieveVehicle(string licensePlate)

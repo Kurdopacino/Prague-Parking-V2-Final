@@ -3,6 +3,15 @@ using System;
 
 namespace ParkingSystem
 {
+    public enum VehicleType
+    {
+        Car,
+        Motorcycle,
+        Bus,
+        Bicycle,
+        Helicopter
+    }
+
     public static class ParkingRateCalculator
     {
         public static int Calculate(VehicleType type, TimeSpan duration)
