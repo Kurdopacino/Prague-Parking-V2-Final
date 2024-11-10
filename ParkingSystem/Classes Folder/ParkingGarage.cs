@@ -1,10 +1,11 @@
 ﻿using System;
 using ParkingSystem.Classes_Folder;
+using System.Text.Json;
+using System.IO;
 
 namespace ParkingSystem.Classes_Folder
 {
-    using System.Text.Json;
-    using System.IO;
+    
 
     public class ParkingGarage
     {
@@ -20,12 +21,12 @@ namespace ParkingSystem.Classes_Folder
 
         private void InitializeGarage()
         {
-            // Initialization logic here
+            
         }
 
         public void SaveParkingDataToFile(string filePath)
         {
-            // Save data logic here
+            
         }
     }
 }
